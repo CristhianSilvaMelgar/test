@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "test-project-7b335": {
+      "hosting": {
+        "bamboo-web": [
+          "test-project-7b335"
+        ]
+      }
+    }
+  }
+}
