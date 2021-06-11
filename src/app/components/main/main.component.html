@@ -1,0 +1,58 @@
+<mat-sidenav-container>
+    <mat-sidenav [(opened)]='opened' mode="side">
+        <mat-nav-list>
+            <mat-list-item routerLinkActive="activebutton">
+                <mat-icon mat-list-icon>person</mat-icon>
+                <span mat-line>{{auth.user.Nombre}}</span>
+                <span mat-line>{{auth.user.Tipo}}</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="activebutton">
+                <mat-icon mat-list-icon>home</mat-icon>
+                <a mat-line routerLink="/main">Dashboard</a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="activebutton">
+              <mat-icon mat-list-icon>inventory</mat-icon>
+              <a mat-line routerLink="/main/categorias">Categorias</a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon mat-list-icon>inventory</mat-icon>
+                <a mat-line routerLink="/main/subcategorias">Subcategorias</a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon mat-list-icon>inventory</mat-icon>
+                <a mat-line>Productos</a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon mat-list-icon>manage_accounts</mat-icon>
+                <a mat-line>Añadir Usuarios</a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon mat-list-icon>qr_code</mat-icon>
+                <a mat-line>Generar Reportes</a>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button mat-icon-button class="example-icon" (click)="opened=!opened">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <span>Bamboo Web</span>
+            <span class="spacer"></span>
+            <button mat-icon-button>
+              <mat-icon>search</mat-icon>
+            </button>
+            <button mat-icon-button (click)="auth.logout()">
+              <mat-icon>logout</mat-icon>
+            </button>
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+  

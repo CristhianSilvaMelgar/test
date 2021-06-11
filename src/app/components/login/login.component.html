@@ -1,0 +1,26 @@
+<div class="form-login">
+    <mat-card>
+        <mat-card-content>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <h2>Iniciar Sesión</h2>
+            <mat-error *ngIf="loginInvalid">
+             El nombre de usuario o contraseña no válidos
+            </mat-error>
+            <mat-form-field class="full-width-input">
+              <input matInput type="text" placeholder="Email" formControlName="email">
+              <mat-error>
+                Introduzca un email válido
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width-input">
+              <input matInput type="password" placeholder="Password" formControlName="password">
+              <mat-error>
+                Introduzca una contraseña válida
+              </mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary">Iniciar Sesión</button>
+          </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+
