@@ -21,10 +21,13 @@ export class SubcategoriasComponent implements OnInit {
   name: string;
   itemsRef: AngularFireList<SubCategorias>;
   items: Observable<SubCategorias[]>;
+  itemsRef2: AngularFireList<any>;
+  items2: Observable<any[]>;
   tableItems:SubCategorias[]=[];
+  categoriaF = new FormControl('');
 
   dataSource:MatTableDataSource<SubCategorias>;
-  displayedColumns: string[] = ['nombre','activo','categoria','operations'];
+  displayedColumns: string[] = ['nombre','activo','operations'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,6 +35,7 @@ export class SubcategoriasComponent implements OnInit {
   constructor(public dialog: MatDialog,
     db: AngularFireDatabase) {
     this.itemsRef = db.list('SubCategorias');
+
 
     this.items = this.itemsRef.snapshotChanges().pipe(
       map(changes => 
@@ -52,6 +56,15 @@ export class SubcategoriasComponent implements OnInit {
       err => console.error('Observer got an error: ' + err),
       () => console.log('Observer got a complete notification')
     );
+
+    this.itemsRef2 = db.list('Categorias');
+    this.items2 = this.itemsRef2.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({ id: c.payload.key as string,
+          nombre: c.payload.child('nombre').val() as string
+        }))
+      )
+    );
     console.log(this.index);
     this.dataSource= new MatTableDataSource(this.tableItems);
   }
@@ -67,7 +80,13 @@ export class SubcategoriasComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
+  onChange(event){
+    this.dataSource.filter = event;
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -176,6 +195,5 @@ export class DialogSubCategorias {
     addItem(nombre: string,fotoUrl: string,activo: boolean,categoria:string) {
       this.itemsRef.push({nombre:nombre,fotoUrl:fotoUrl,activo:activo,categoria:categoria,descripcion:''});
     }
-
 }
 

@@ -5,14 +5,14 @@
 export const environment = {
   production: false,
   firebase:{
-    apiKey: "AIzaSyCNbfm35Ujj1Xf67g8jmK1GQaW1DMut6tA",
-    authDomain: "bamboostore-33bc1.firebaseapp.com",
-    databaseURL: "https://bamboostore-33bc1-default-rtdb.firebaseio.com",
-    projectId: "bamboostore-33bc1",
-    storageBucket: "bamboostore-33bc1.appspot.com",
-    messagingSenderId: "761350673875",
-    appId: "1:761350673875:web:f7a56a2630154c89700b26",
-    measurementId: "G-E0NTVYLH0J"
+    apiKey: "AIzaSyA6RWuf-ON-Euz6CtaT7z4mSy63bp1EG78",
+    authDomain: "bamboo-3c007.firebaseapp.com",
+    databaseURL: "https://bamboo-3c007.firebaseio.com",
+    projectId: "bamboo-3c007",
+    storageBucket: "bamboo-3c007.appspot.com",
+    messagingSenderId: "880786765420",
+    appId: "1:880786765420:web:64d1d95f8b954df6b94a49",
+    measurementId: "G-HESWF2QP1N"
   }
 };
 

@@ -34,10 +34,14 @@ tr td{
 }
 .header mat-form-field{
     font-size: 14px;
-    width: 90%;
-    min-width: 90%;
+    width: 60%;
+    min-width: 60%;
 }
-
+.header .categoria{
+    font-size: 14px;
+    width: 30%;
+    min-width: 30%;
+}
 .red {
     color: red; 
 }

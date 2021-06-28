@@ -4,6 +4,12 @@
         <mat-label>Buscar</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Quesos" #input>
       </mat-form-field>
+      <mat-form-field class="categoria">
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="categoria" placeholder="Categoria">
+          <mat-option *ngFor="let categoria of items2 | async" value="{{categoria.id}}" (click)="onChange(categoria.id)">{{categoria.nombre | json}}</mat-option>
+        </mat-select>
+      </mat-form-field>
       <button mat-fab color="accent" (click)="openDialog()">
         <mat-icon>add</mat-icon>
       </button>
