@@ -36,6 +36,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogSubCategorias, SubcategoriasComponent } from './components/subcategorias/subcategorias.component';
+import { DialogProductos ,ProductosComponent } from './components/productos/productos.component';
 
 
 @NgModule({
@@ -46,7 +47,9 @@ import { DialogSubCategorias, SubcategoriasComponent } from './components/subcat
     DialogCategorias,
     CategoriasComponent,
     SubcategoriasComponent,
-    DialogSubCategorias
+    DialogSubCategorias,
+    ProductosComponent,
+    DialogProductos
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { DialogSubCategorias, SubcategoriasComponent } from './components/subcat
       {path: 'login', component: LoginComponent},
       {path: 'main', component: MainComponent, canActivate: [AuthGuard], children:[
         {path: 'categorias', component:CategoriasComponent ,canActivate: [AuthGuard]},
-        {path: 'subcategorias', component:SubcategoriasComponent ,canActivate: [AuthGuard]}
+        {path: 'subcategorias', component:SubcategoriasComponent ,canActivate: [AuthGuard]},
+        {path: 'productos', component:ProductosComponent ,canActivate: [AuthGuard]}
       ]},
       {path: '', redirectTo: '/login', pathMatch: 'full'},
     ]),
