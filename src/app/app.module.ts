@@ -37,6 +37,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogSubCategorias, SubcategoriasComponent } from './components/subcategorias/subcategorias.component';
 import { DialogProductos ,ProductosComponent } from './components/productos/productos.component';
+import { DialogUsuarios, UsuariosComponent } from './components/usuarios/usuarios.component';
+import { PedidosComponent } from './components/pedidos/pedidos.component';
 
 
 @NgModule({
@@ -49,7 +51,10 @@ import { DialogProductos ,ProductosComponent } from './components/productos/prod
     SubcategoriasComponent,
     DialogSubCategorias,
     ProductosComponent,
-    DialogProductos
+    DialogProductos,
+    UsuariosComponent,
+    DialogUsuarios,
+    PedidosComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +68,9 @@ import { DialogProductos ,ProductosComponent } from './components/productos/prod
       {path: 'main', component: MainComponent, canActivate: [AuthGuard], children:[
         {path: 'categorias', component:CategoriasComponent ,canActivate: [AuthGuard]},
         {path: 'subcategorias', component:SubcategoriasComponent ,canActivate: [AuthGuard]},
-        {path: 'productos', component:ProductosComponent ,canActivate: [AuthGuard]}
+        {path: 'productos', component:ProductosComponent ,canActivate: [AuthGuard]},
+        {path: 'usuarios', component:UsuariosComponent ,canActivate: [AuthGuard]},
+        {path: 'pedidos', component:PedidosComponent ,canActivate: [AuthGuard]},
       ]},
       {path: '', redirectTo: '/login', pathMatch: 'full'},
     ]),

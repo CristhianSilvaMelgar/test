@@ -14,8 +14,8 @@ export class LoginComponent implements OnInit {
   private formSubmitAttempt = false;
   constructor(private fb: FormBuilder,public auth: AuthService,private router: Router) { 
     this.form = this.fb.group({
-      email: ['', [Validators.email,Validators.required]],
-      password: ['', [Validators.required,Validators.minLength(6)]]
+      email: ['Adminweb@gmail.com', [Validators.email,Validators.required]],
+      password: ['123456xd', [Validators.required,Validators.minLength(6)]]
     });
     if(this.auth.user$){
       router.navigate(['/main']);

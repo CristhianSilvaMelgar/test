@@ -3,5 +3,12 @@ export interface SubCategorias {
     nombre: string;
     fotoUrl: string;
     activo: boolean;
-    categoria:string;
+    categoria: string;
 }
+
+
+
+
+
+
+

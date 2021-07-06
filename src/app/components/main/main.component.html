@@ -13,8 +13,8 @@
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item routerLinkActive="activebutton">
-              <mat-icon mat-list-icon>inventory</mat-icon>
-              <a mat-line routerLink="/main/categorias">Categorias</a>
+                <mat-icon mat-list-icon>inventory</mat-icon>
+                <a mat-line routerLink="/main/categorias">Categorias</a>
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
@@ -28,8 +28,13 @@
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
+                <mat-icon mat-list-icon>inventory</mat-icon>
+                <a mat-line routerLink="/main/pedidos">Pedidos</a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
                 <mat-icon mat-list-icon>manage_accounts</mat-icon>
-                <a mat-line>Añadir Usuarios</a>
+                <a mat-line routerLink="/main/usuarios">Usuarios</a>
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
@@ -55,4 +60,3 @@
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
-  

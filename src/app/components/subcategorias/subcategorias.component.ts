@@ -8,7 +8,8 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { SubCategorias } from 'src/app/models/sub-categorias';
+import { SubCategorias } from 'src/app/models/subcategorias';
+
 
 @Component({
   selector: 'app-subcategorias',
@@ -17,17 +18,17 @@ import { SubCategorias } from 'src/app/models/sub-categorias';
 })
 export class SubcategoriasComponent implements OnInit {
 
-  index:number=0;
+  index: number = 0;
   name: string;
   itemsRef: AngularFireList<SubCategorias>;
   items: Observable<SubCategorias[]>;
   itemsRef2: AngularFireList<any>;
   items2: Observable<any[]>;
-  tableItems:SubCategorias[]=[];
+  tableItems: SubCategorias[] = [];
   categoriaF = new FormControl('');
 
-  dataSource:MatTableDataSource<SubCategorias>;
-  displayedColumns: string[] = ['nombre','activo','operations'];
+  dataSource: MatTableDataSource<SubCategorias>;
+  displayedColumns: string[] = ['nombre', 'activo', 'operations'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -36,10 +37,10 @@ export class SubcategoriasComponent implements OnInit {
     db: AngularFireDatabase) {
     this.itemsRef = db.list('SubCategorias');
 
-
     this.items = this.itemsRef.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c => ({ id: c.payload.key as string,
+      map(changes =>
+        changes.map(c => ({
+          id: c.payload.key as string,
           nombre: c.payload.child('nombre').val() as string,
           fotoUrl: c.payload.child('fotoUrl').val() as string,
           activo: c.payload.child('activo').val() as boolean,
@@ -49,7 +50,7 @@ export class SubcategoriasComponent implements OnInit {
     );
     this.items.subscribe(
       x => {
-        this.dataSource= new MatTableDataSource(x);
+        this.dataSource = new MatTableDataSource(x);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
@@ -59,14 +60,15 @@ export class SubcategoriasComponent implements OnInit {
 
     this.itemsRef2 = db.list('Categorias');
     this.items2 = this.itemsRef2.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c => ({ id: c.payload.key as string,
+      map(changes =>
+        changes.map(c => ({
+          id: c.payload.key as string,
           nombre: c.payload.child('nombre').val() as string
         }))
       )
     );
     console.log(this.index);
-    this.dataSource= new MatTableDataSource(this.tableItems);
+    this.dataSource = new MatTableDataSource(this.tableItems);
   }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class SubcategoriasComponent implements OnInit {
     }
   }
 
-  onChange(event){
+  onChange(event) {
     this.dataSource.filter = event;
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -96,18 +98,18 @@ export class SubcategoriasComponent implements OnInit {
     if (row) {
       const dialogRef = this.dialog.open(DialogSubCategorias, {
         width: '400px',
-        data: {id:row.id,nombre:row.nombre,fotoUrl:row.fotoUrl,activo:row.activo,categoria:row.categoria}
+        data: { id: row.id, nombre: row.nombre, fotoUrl: row.fotoUrl, activo: row.activo, categoria: row.categoria }
       });
     }
-    else{
+    else {
       const dialogRef = this.dialog.open(DialogSubCategorias, {
         width: '400px',
-        data: {id:'' ,nombre:'',fotoUrl:'',activo:null,categoria:''}
+        data: { id: '', nombre: '', fotoUrl: '', activo: null, categoria: '' }
       });
     }
   }
 
-  
+
 }
 
 @Component({
@@ -123,77 +125,80 @@ export class DialogSubCategorias {
   items: Observable<any[]>;
 
   DialogSubCategoriasForm = new FormGroup({
-    nombre: new FormControl(this.data.nombre,Validators.required),
-    fotoUrl: new FormControl(this.data.fotoUrl,Validators.required),
-    activo: new FormControl(this.data.activo,Validators.required),
-    categoria: new FormControl(this.data.categoria,Validators.required),
+    nombre: new FormControl(this.data.nombre, Validators.required),
+    fotoUrl: new FormControl(this.data.fotoUrl, Validators.required),
+    activo: new FormControl(this.data.activo, Validators.required),
+    categoria: new FormControl(this.data.categoria, Validators.required),
   });
   fotoUrl: string;
-  fotoUrlEx:string=this.data.fotoUrl;
+  fotoUrlEx: string = this.data.fotoUrl;
 
   constructor(
     public dialogRef: MatDialogRef<DialogSubCategorias>,
     @Inject(MAT_DIALOG_DATA) public data: SubCategorias,
-      db: AngularFireDatabase,
-      private storage: AngularFireStorage) {
-      this.itemsRef = db.list('SubCategorias');
-      this.itemsRef2 = db.list('Categorias');
-      this.fotoUrl;
-      this.items = this.itemsRef2.snapshotChanges().pipe(
-        map(changes => 
-          changes.map(c => ({ id: c.payload.key as string,
-            nombre: c.payload.child('nombre').val() as string
-          }))
-        )
-      );
-    }
-    uploadFile(event) {
-      const file = event.target.files[0];
-      const filePath = 'SubCategorias/'+ Date.now();;
-      const fileRef = this.storage.ref(filePath);
-      const task = this.storage.upload(filePath, file);
-  
-      // observe percentage changes
-      this.uploadPercent = task.percentageChanges();
-      // get notified when the download URL is available
-      task.snapshotChanges().pipe(
-          finalize(() => {
-            this.downloadURL = fileRef.getDownloadURL();
-            fileRef.getDownloadURL().subscribe(value=>{
-              this.fotoUrl=value
-              this.DialogSubCategoriasForm.setValue({nombre:this.DialogSubCategoriasForm.get('nombre').value,
-              fotoUrl:this.fotoUrl,
-              activo:this.DialogSubCategoriasForm.get('activo').value,
-              categoria:this.DialogSubCategoriasForm.get('categoria').value});
-            });
-          })
-       )
+    db: AngularFireDatabase,
+    private storage: AngularFireStorage) {
+    this.itemsRef = db.list('SubCategorias');
+    this.itemsRef2 = db.list('Categorias');
+    this.fotoUrl;
+    this.items = this.itemsRef2.snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({
+          id: c.payload.key as string,
+          nombre: c.payload.child('nombre').val() as string
+        }))
+      )
+    );
+  }
+  uploadFile(event) {
+    const file = event.target.files[0];
+    const filePath = 'SubCategorias/' + Date.now();;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+
+    // observe percentage changes
+    this.uploadPercent = task.percentageChanges();
+    // get notified when the download URL is available
+    task.snapshotChanges().pipe(
+      finalize(() => {
+        this.downloadURL = fileRef.getDownloadURL();
+        fileRef.getDownloadURL().subscribe(value => {
+          this.fotoUrl = value
+          this.DialogSubCategoriasForm.setValue({
+            nombre: this.DialogSubCategoriasForm.get('nombre').value,
+            fotoUrl: this.fotoUrl,
+            activo: this.DialogSubCategoriasForm.get('activo').value,
+            categoria: this.DialogSubCategoriasForm.get('categoria').value
+          });
+        });
+      })
+    )
       .subscribe();
-    }
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
-    aceptar(){
-      if (this.data.id!=='') {
-        console.log(this.DialogSubCategoriasForm.get('fotoUrl').value);
-        this.updateItem(this.data.id,
-          this.DialogSubCategoriasForm.get('nombre').value,
-          this.DialogSubCategoriasForm.get('fotoUrl').value,
-          this.DialogSubCategoriasForm.get('activo').value,
-          this.DialogSubCategoriasForm.get('categoria').value)
-      }else{
-        this.addItem(this.DialogSubCategoriasForm.get('nombre').value,
+  }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  aceptar() {
+    if (this.data.id !== '') {
+      console.log(this.DialogSubCategoriasForm.get('fotoUrl').value);
+      this.updateItem(this.data.id,
+        this.DialogSubCategoriasForm.get('nombre').value,
+        this.DialogSubCategoriasForm.get('fotoUrl').value,
+        this.DialogSubCategoriasForm.get('activo').value,
+        this.DialogSubCategoriasForm.get('categoria').value)
+    } else {
+      this.addItem(this.DialogSubCategoriasForm.get('nombre').value,
         this.DialogSubCategoriasForm.get('fotoUrl').value,
         this.DialogSubCategoriasForm.get('activo').value,
         this.DialogSubCategoriasForm.get('categoria').value);
-      }
-      this.dialogRef.close();
     }
-    updateItem(id: string, nombre: string,fotoUrl: string,activo: boolean,categoria:string) {
-      this.itemsRef.update(id, { nombre: nombre, fotoUrl:fotoUrl, activo:activo, categoria: categoria,descripcion:''});
-    }
-    addItem(nombre: string,fotoUrl: string,activo: boolean,categoria:string) {
-      this.itemsRef.push({nombre:nombre,fotoUrl:fotoUrl,activo:activo,categoria:categoria,descripcion:''});
-    }
+    this.dialogRef.close();
+  }
+  updateItem(id: string, nombre: string, fotoUrl: string, activo: boolean, categoria: string) {
+    this.itemsRef.update(id, { nombre: nombre, fotoUrl: fotoUrl, activo: activo, categoria: categoria, descripcion: '' });
+  }
+  addItem(nombre: string, fotoUrl: string, activo: boolean, categoria: string) {
+    this.itemsRef.push({ nombre: nombre, fotoUrl: fotoUrl, activo: activo, categoria: categoria, descripcion: '' });
+  }
 }
 
