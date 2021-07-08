@@ -1,27 +1,36 @@
-<h1 mat-dialog-title>Categorias</h1>
+<h1 mat-dialog-title>Usuarios</h1>
 <div mat-dialog-content class="dialog">
-    <form [formGroup]="DialogCategoriasForm" (ngSubmit)="aceptar()">
-        <mat-form-field>
-            <mat-label>Nombre</mat-label>
-            <input matInput formControlName="nombre">
-        </mat-form-field>
-        <mat-form-field style="display: none;">
-            <mat-label>FotoUrl</mat-label>
-            <input matInput formControlName="fotoUrl">
-        </mat-form-field>
-        <div *ngIf="fotoUrlEx !=''; else elseBlock"><img [src]="fotoUrlEx" width="180px" height="180px"></div>
-        <ng-template #elseBlock><img [src]="downloadURL | async" width="180px" height="180px"></ng-template>
-        <input type="file" (change)="uploadFile($event)" />
-        <div>{{ uploadPercent | async }}</div>
-        <mat-form-field>
-            <mat-select required formControlName="activo" placeholder="Seleccione">
-                <mat-option value=true>Dar de Alta</mat-option>
-                <mat-option value=false>Dar de Baja</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </form>
+  <form [formGroup]="DialogUsuariosForm" (ngSubmit)="aceptar()">
+  <mat-form-field *ngIf="!data.key">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
+  <mat-form-field *ngIf="!data.key">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput formControlName="nombre">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Tipo</mat-label>
+    <mat-select required formControlName="tipo" placeholder="Seleccione">
+      <mat-option value="ADM">Administrador</mat-option>
+      <mat-option value="DLY">Repartidor</mat-option>
+      <mat-option value="USR">Cliente</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Estado</mat-label>
+  <mat-select required formControlName="activo" placeholder="Seleccione">
+        <mat-option value=true>Dar de Alta</mat-option>
+        <mat-option value=false>Dar de Baja</mat-option>
+  </mat-select>
+  </mat-form-field>
+  </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()" color="warn">Cancelar</button>
-    <button mat-button (click)="aceptar()" color="primary" [disabled]="!DialogCategoriasForm.valid">Ok</button>
+  <button mat-button (click)="onNoClick()" color="warn">Cancelar</button>
+  <button mat-button (click)="aceptar()" color="primary" [disabled]="!DialogUsuariosForm.valid">Ok</button>
 </div>

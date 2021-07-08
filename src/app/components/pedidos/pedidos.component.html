@@ -1,1 +1,106 @@
-<p>pedidos works!</p>
+<div class="container">
+    <div class="header">
+        <mat-form-field>
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Quesos" #input>
+        </mat-form-field>
+        <mat-form-field class="categoria">
+            <mat-label>Repartidor</mat-label>
+            <mat-select formControlName="categoria" placeholder="Categoria">
+                <mat-option value="" (click)="onChange('')">Listar Todos</mat-option>
+                <ng-container *ngFor="let categoria of items2 | async">
+                    <mat-option *ngIf="categoria.tipo=='DLY' || categoria.tipo=='ADM'" value="{{categoria.id}}" (click)="onChange(categoria.id)">
+                        {{categoria.nombre}}
+                    </mat-option>
+                </ng-container>
+            </mat-select>
+        </mat-form-field>
+        <button mat-fab color="accent" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div class="mat-elevation-z8 table">
+        <table mat-table [dataSource]="dataSource" matSort>
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+            </ng-container>
+
+            <!-- Nombre Column -->
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                <td mat-cell *matCellDef="let row"> {{row.fecha | date:'dd/MM/yyyy HH:mm'}} </td>
+            </ng-container>
+
+            <!-- Foto-Url Column -->
+            <ng-container matColumnDef="dly">
+                <th mat-header-cell *matHeaderCellDef> DLY </th>
+                <td mat-cell *matCellDef="let row"> {{row.dly}} </td>
+            </ng-container>
+
+            <!-- Categoria Column -->
+            <ng-container matColumnDef="producto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Producto </th>
+                <td mat-cell *matCellDef="let row"> {{row.producto}} </td>
+            </ng-container>
+
+            <!-- Ubicacion Column -->
+            <ng-container matColumnDef="ubicacion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ubicacion </th>
+                <td mat-cell *matCellDef="let row"> {{row.ubicacion}} </td>
+            </ng-container>
+
+            <!-- Estado Column -->
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="row.activo=='true' ? 'green' : 'red'">
+                    <div *ngIf="row.activo =='true'; else elseBlock">
+                        Activo
+                    </div>
+                    <ng-template #elseBlock>Baja</ng-template>
+                </td>
+            </ng-container>
+
+            <!-- Activo Column -->
+            <ng-container matColumnDef="activo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="row.estado=='true' ? 'green' : 'red'">
+                    <div *ngIf="row.estado == 'true'; else elseBlock">
+                        Activo
+                    </div>
+                    <ng-template #elseBlock>Baja</ng-template>
+                </td>
+            </ng-container>
+
+            <!-- Precio Column -->
+            <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio Total </th>
+                <td mat-cell *matCellDef="let row"> {{row.precio}} </td>
+            </ng-container>
+
+            <!-- Operaciones Column -->
+            <ng-container matColumnDef="operations">
+                <th mat-header-cell *matHeaderCellDef>Operaciones</th>
+                <td mat-cell *matCellDef="let row">
+                    <button mat-icon-button color="accent" (click)="openDialog(row)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="openDialog(row)">
+                        <mat-icon>pin_drop</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">Ningún dato coincide con:"{{input.value}}"</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>

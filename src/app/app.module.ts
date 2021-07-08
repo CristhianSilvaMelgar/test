@@ -38,7 +38,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogSubCategorias, SubcategoriasComponent } from './components/subcategorias/subcategorias.component';
 import { DialogProductos ,ProductosComponent } from './components/productos/productos.component';
 import { DialogUsuarios, UsuariosComponent } from './components/usuarios/usuarios.component';
-import { PedidosComponent } from './components/pedidos/pedidos.component';
+import { DialogPedidos,PedidosComponent } from './components/pedidos/pedidos.component';
 
 
 @NgModule({
@@ -54,7 +54,8 @@ import { PedidosComponent } from './components/pedidos/pedidos.component';
     DialogProductos,
     UsuariosComponent,
     DialogUsuarios,
-    PedidosComponent
+    PedidosComponent,
+    DialogPedidos
   ],
   imports: [
     BrowserModule,

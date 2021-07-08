@@ -20,7 +20,8 @@ export class AuthService {
   user:Usuarios = {
     Nombre: '',
     Tipo:'',
-    key:''
+    key:'',
+    activo:null
   }; 
   constructor(
     private afAuth: AngularFireAuth,
@@ -29,22 +30,25 @@ export class AuthService {
   ) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
+        console.log(user.uid);
+        console.log(localStorage.getItem('uid'))
           // Logged in
         if (user) {
           this.itemsRef = this.db.list('Usuario');
           // Use snapshotChanges().map() to store the key
           this.items = this.itemsRef.snapshotChanges().pipe(
             map(changes => 
-              changes.map(c => ({ key: c.payload.key as string,Nombre:c.payload.child('nombre').val() as string, Tipo: c.payload.child('tipo').val() as string }))
+              changes.map(c => ({ key: c.payload.key as string,Nombre:c.payload.child('nombre').val() as string, Tipo: c.payload.child('tipo').val() as string, activo:c.payload.child('tipo').val() as boolean  }))
             )
             );
             this.items.forEach(item =>{
               item.forEach(item2=>{
-                if(item2.key === firebase.auth().currentUser.uid && item2.Tipo === 'ADM'){
+                if(item2.key === firebase.auth().currentUser.uid && item2.Tipo === 'ADM', item2.key === localStorage.getItem('uid')){
                   this.user={
                     Nombre: item2.Nombre,
                     Tipo: item2.Tipo,
-                    key: item2.key
+                    key: item2.key,
+                    activo:item2.activo
                   };
                 }
               });
@@ -62,11 +66,12 @@ export class AuthService {
   login(email,password) {
     this.afAuth.signInWithEmailAndPassword(email,password)
     .then(res => {
+      localStorage.setItem('uid', firebase.auth().currentUser.uid);
       this.itemsRef = this.db.list('Usuario');
       // Use snapshotChanges().map() to store the key
       this.items = this.itemsRef.snapshotChanges().pipe(
         map(changes => 
-          changes.map(c => ({ key: c.payload.key as string,Nombre:c.payload.child('nombre').val() as string, Tipo: c.payload.child('tipo').val() as string }))
+          changes.map(c => ({ key: c.payload.key as string,Nombre:c.payload.child('nombre').val() as string, Tipo: c.payload.child('tipo').val() as string, activo: c.payload.child('tipo').val() as boolean}))
         )
         );
         this.items.forEach(item =>{
@@ -75,7 +80,8 @@ export class AuthService {
               this.user={
                 Nombre: item2.Nombre,
                 Tipo: item2.Tipo,
-                key: item2.key
+                key: item2.key,
+                activo:item2.activo
               };
             }
           });
@@ -92,10 +98,12 @@ export class AuthService {
   }
   logout() {
     this.afAuth.signOut();
+    localStorage.setItem('uid', '');
     this.user= {
       Nombre: '',
       Tipo:'',
-      key:''
+      key:'',
+      activo:null
     }; 
 
     this.router.navigate(['/login']);
