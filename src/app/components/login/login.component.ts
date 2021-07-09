@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,13 +12,19 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   public loginInvalid = false;
   private formSubmitAttempt = false;
-  constructor(private fb: FormBuilder,public auth: AuthService,private router: Router) { 
+    constructor(
+    private fb: FormBuilder,
+    public auth: AuthService,
+    private router: Router,
+    private ngZone: NgZone,) { 
     this.form = this.fb.group({
       email: ['Adminweb@gmail.com', [Validators.email,Validators.required]],
       password: ['123456xd', [Validators.required,Validators.minLength(6)]]
     });
     if(this.auth.user$){
-      router.navigate(['/main']);
+      this.ngZone.run(() => {
+        this.router.navigate(['/main']);
+      });
     }
   }
   

@@ -10,7 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import firebase from 'firebase/app';
-import { Usuarios } from 'src/app/models/usuarios';
+import { Status, Usuarios } from 'src/app/models/usuarios';
+import { Roles } from 'src/app/models/roles';
 
 @Component({
   selector: 'app-usuarios',
@@ -25,6 +26,13 @@ export class UsuariosComponent implements OnInit {
   items: Observable<Usuarios[]>;
   tableItems: Usuarios[] = [];
   categoriaF = new FormControl('');
+
+  public roles: Roles[] = [
+    {key: '', nombre: 'Listar Todos'},
+    {key: 'ADM', nombre: 'Administradores'},
+    {key: 'DLY', nombre: 'Repartidores'},
+    {key: 'USR', nombre: 'Cliente'}
+  ]
 
   dataSource: MatTableDataSource<Usuarios>;
   displayedColumns: string[] = ['Nombre', 'Tipo','activo', 'operations'];
@@ -130,11 +138,23 @@ export class DialogUsuarios {
   itemsRef2: AngularFireList<any>;
   items: Observable<any[]>;
 
+  public roles: Roles[] = [
+    {key: 'ADM', nombre: 'Administrador'},
+    {key: 'DLY', nombre: 'Repartidor'},
+    {key: 'USR', nombre: 'Cliente'}
+  ]
+
+  public status: Status[] = [
+    {key: true, nombre: 'Dar de Alta'},
+    {key: false, nombre: 'Dar de Baja'},
+  ]
+
+
   DialogUsuariosForm = new FormGroup({
+    email: new FormControl('', [Validators.required,Validators.email]),
+    password: new FormControl('', [Validators.required,Validators.minLength(6)]),
     nombre: new FormControl(this.data.Nombre, Validators.required),
     tipo: new FormControl(this.data.Tipo, Validators.required),
-    email: new FormControl("alguien@example.com", [Validators.required,Validators.email]),
-    password: new FormControl("123456", [Validators.required,Validators.minLength(6)]),
     activo: new FormControl(this.data.activo, Validators.required)
   });
 
@@ -142,6 +162,7 @@ export class DialogUsuarios {
     private afAuth: AngularFireAuth,
     public dialogRef: MatDialogRef<DialogUsuarios>,
     @Inject(MAT_DIALOG_DATA) public data: Usuarios,
+
     db: AngularFireDatabase,
     private storage: AngularFireStorage) {
       this.itemsRef = db.list('Usuario');

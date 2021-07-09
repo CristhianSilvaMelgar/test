@@ -2,15 +2,16 @@
     <div class="header">
         <mat-form-field>
             <mat-label>Buscar</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Quesos" #input>
+            <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ej. Quesos" #input>
         </mat-form-field>
         <mat-form-field class="categoria">
             <mat-label>Tipo</mat-label>
             <mat-select formControlName="categoria" placeholder="Tipo">
-                <mat-option value="" (click)="onChange('')">Listar Todos</mat-option>
+                <mat-option *ngFor="let item of roles" value="{{item.nombre}}" (click)="onChange(item.key)">{{item.nombre}}</mat-option>
+                <!-- <mat-option value="" (click)="onChange('')">Listar Todos</mat-option>
                 <mat-option value="Administradores" (click)="onChange('ADM')">Administradores</mat-option>
                 <mat-option value="Repartidores" (click)="onChange('DLY')">Repartidores</mat-option>
-                <mat-option value="Clientes" (click)="onChange('USR')">Clientes</mat-option>
+                <mat-option value="Clientes" (click)="onChange('USR')">Clientes</mat-option> -->
             </mat-select>
         </mat-form-field>
         <button mat-fab color="accent" (click)="openDialog()">
