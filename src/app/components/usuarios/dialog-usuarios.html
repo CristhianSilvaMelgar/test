@@ -1,36 +1,38 @@
-<h1 mat-dialog-title>Usuarios</h1>
+<h1 mat-dialog-title>Registrar Usuario</h1>
 <div mat-dialog-content class="dialog">
-  <form [formGroup]="DialogUsuariosForm" (ngSubmit)="aceptar()">
-  <mat-form-field *ngIf="!data.key">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email">
-  </mat-form-field>
-  <mat-form-field *ngIf="!data.key">
-    <mat-label>Password</mat-label>
-    <input matInput formControlName="password">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Nombre</mat-label>
-    <input matInput formControlName="nombre">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Tipo</mat-label>
-    <mat-select required formControlName="tipo" placeholder="Seleccione">
-      <mat-option value="ADM">Administrador</mat-option>
-      <mat-option value="DLY">Repartidor</mat-option>
-      <mat-option value="USR">Cliente</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Estado</mat-label>
-  <mat-select required formControlName="activo" placeholder="Seleccione">
-        <mat-option value=true>Dar de Alta</mat-option>
-        <mat-option value=false>Dar de Baja</mat-option>
-  </mat-select>
-  </mat-form-field>
-  </form>
+    <form [formGroup]="DialogUsuariosForm" (ngSubmit)="aceptar()">
+        <mat-form-field *ngIf="!data.key">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ingrese un correo electronico" formControlName="email">
+        </mat-form-field>
+        <mat-form-field *ngIf="!data.key">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Ingrese una contraseña" formControlName="password">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Ingrese un nombre" formControlName="nombre">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <mat-select required formControlName="tipo" placeholder="Seleccione">
+                <!-- <mat-option *ngFor="let item of roles" value="{{item.key}}">{{item.nombre}}</mat-option> -->
+                <mat-option value="ADM">Administrador</mat-option>
+                <mat-option value="DLY">Repartidor</mat-option>
+                <mat-option value="USR">Cliente</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Estado</mat-label>
+            <mat-select required formControlName="activo">
+                <!-- <mat-option *ngFor="let item of status" [value]="item.key">{{item.nombre}}</mat-option> -->
+                <mat-option value=true>Dar de Alta</mat-option>
+                <mat-option value=false>Dar de Baja</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" color="warn">Cancelar</button>
-  <button mat-button (click)="aceptar()" color="primary" [disabled]="!DialogUsuariosForm.valid">Ok</button>
+    <button mat-button (click)="onNoClick()" color="warn">Cancelar</button>
+    <button mat-button (click)="aceptar()" color="primary" [disabled]="!DialogUsuariosForm.valid">Ok</button>
 </div>
