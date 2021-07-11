@@ -151,8 +151,8 @@ export class DialogUsuarios {
 
 
   DialogUsuariosForm = new FormGroup({
-    email: new FormControl('', [Validators.required,Validators.email]),
-    password: new FormControl('', [Validators.required,Validators.minLength(6)]),
+    email: new FormControl(this.data.mail, [Validators.required,Validators.email]),
+    password: new FormControl(this.data.pass, [Validators.required,Validators.minLength(6)]),
     nombre: new FormControl(this.data.Nombre, Validators.required),
     tipo: new FormControl(this.data.Tipo, Validators.required),
     activo: new FormControl(this.data.activo, Validators.required)
