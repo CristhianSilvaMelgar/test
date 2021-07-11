@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Detalles Ubicación</h1>
+<div mat-dialog-content class="dialog">
+  <ng-container *ngFor="let ubicacion of items | async">
+    <ng-container *ngIf="ubicacion.id === data.id ? setCoords(ubicacion.latitude,ubicacion.longitude,ubicacion.direccion,ubicacion.referencia,ubicacion.celular) : false">
+    </ng-container>
+  </ng-container>
+  <p>Direccion: {{direccion}}</p>
+  <p>Referencia: {{referencia}}</p>
+  <p>Celular: {{celular}}</p>
+  <div style="height: 300px;"
+    leaflet 
+    [leafletOptions]="options"
+    [leafletLayers]="layers"
+    (leafletMapReady)="onMapReady($event)"
+    >
+  </div>
+</div>
+<div mat-dialog-actions [ngClass]="'center'">
+  <button mat-button (click)="aceptar()" color="primary">Ok</button>
+</div>

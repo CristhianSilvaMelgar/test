@@ -36,7 +36,7 @@
   <mat-form-field>
     <mat-label>SubCategoria</mat-label>
     <mat-select required formControlName="subcategoria" placeholder="Seleccione">
-      <mat-option *ngFor="let subcategoria of items | async" value="{{subcategoria.id}}">{{subcategoria.nombre | json}}</mat-option>
+      <mat-option *ngFor="let subcategoria of items | async" value="{{subcategoria.id}}">{{subcategoria.nombre}}</mat-option>
     </mat-select>
   </mat-form-field>
   </form>

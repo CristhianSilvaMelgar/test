@@ -100,17 +100,17 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
-  openDialog(row?: Usuarios): void {
+  openDialog(row?: any): void {
     if (row) {
       const dialogRef = this.dialog.open(DialogUsuarios, {
         width: '400px',
-        data: { key: row.key, Nombre: row.Nombre, Tipo: row.Tipo, activo: row.activo}
+        data: {mail:'mail@gmail.com',pass:'123456', key: row.key, Nombre: row.Nombre, Tipo: row.Tipo, activo: row.activo}
       });
     }
     else {
       const dialogRef = this.dialog.open(DialogUsuarios, {
         width: '400px',
-        data: { key: '', Nombre: '', Tipo: '', activo: null }
+        data: {mail:'',pass:'', key: '', Nombre: '', Tipo: '', activo: null }
       });
     }
   }
@@ -133,15 +133,15 @@ export class DialogUsuarios {
   DialogUsuariosForm = new FormGroup({
     nombre: new FormControl(this.data.Nombre, Validators.required),
     tipo: new FormControl(this.data.Tipo, Validators.required),
-    email: new FormControl("alguien@example.com", [Validators.required,Validators.email]),
-    password: new FormControl("123456", [Validators.required,Validators.minLength(6)]),
+    email: new FormControl(this.data.mail, [Validators.required,Validators.email]),
+    password: new FormControl(this.data.pass, [Validators.required,Validators.minLength(6)]),
     activo: new FormControl(this.data.activo, Validators.required)
   });
 
   constructor(
     private afAuth: AngularFireAuth,
     public dialogRef: MatDialogRef<DialogUsuarios>,
-    @Inject(MAT_DIALOG_DATA) public data: Usuarios,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     db: AngularFireDatabase,
     private storage: AngularFireStorage) {
       this.itemsRef = db.list('Usuario');

@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { SubCategorias } from 'src/app/models/subcategorias';
+import { circle, latLng, marker, polygon, tileLayer } from 'leaflet';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-pedidos',
@@ -25,6 +27,7 @@ export class PedidosComponent implements OnInit {
   itemsRef2: AngularFireList<any>;
   items2: Observable<any[]>;
   tableItems: any[] = [];
+  filtro:string;
   categoriaF = new FormControl('');
 
   dataSource: MatTableDataSource<SubCategorias>;
@@ -83,14 +86,6 @@ export class PedidosComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
   onChange(event) {
     this.dataSource.filter = event;
     if (this.dataSource.paginator) {
@@ -98,8 +93,8 @@ export class PedidosComponent implements OnInit {
     }
   }
 
-  openDialog(row?: any): void {
-    if (row) {
+  openDialog(row?: any,tipo?:string): void {
+    if (tipo === 'detalles') {
       const dialogRef = this.dialog.open(DialogPedidos, {
         width: '400px',
         data: { 
@@ -111,10 +106,10 @@ export class PedidosComponent implements OnInit {
           precio:row.precio }
       });
     }
-    else {
-      const dialogRef = this.dialog.open(DialogPedidos, {
+    else if(tipo === 'ubicacion'){
+      const dialogRef = this.dialog.open(DialogUbicacion, {
         width: '400px',
-        data: { id: '', nombre: '', fotoUrl: '', activo: null, categoria: '' }
+        data: { id: row.ubicacion }
       });
     }
   }
@@ -142,6 +137,7 @@ export class DialogPedidos {
   itemsRef: AngularFireList<any>;
   itemsRef2: AngularFireList<products>;
   items: Observable<products[]>;
+  items2: Observable<any[]>;
 
   products:product[]=[];
 
@@ -176,13 +172,21 @@ export class DialogPedidos {
     );
 
     for (let key of Object.keys(this.data.producto)) {
-      let detail:product = { id: key, cantidad: (Object.values(this.data.producto[key])[0]) as string };
-    
+      let detail:product = { id: key, cantidad: (Object.values(this.data.producto[key])[0]) as string };  
       this.products.push(detail);
     }
     this.products.forEach((data)=>{
-      console.log(data.id+" : " +data.cantidad)
-    })
+      console.log(data.id+" : " +data.cantidad);
+    });
+
+    this.items2 = this.itemsRef.snapshotChanges().pipe(
+      map(changes=>
+        changes.map(c=>({
+          id:c.payload.key as string,
+          nombre:c.payload.child('nombre').val() as string
+        }))
+      )
+    )
   }
   uploadFile(event) {
     const file = event.target.files[0];
@@ -213,19 +217,6 @@ export class DialogPedidos {
     this.dialogRef.close();
   }
   aceptar() {
-    if (this.data.id !== '') {
-      console.log(this.DialogSubCategoriasForm.get('fotoUrl').value);
-      this.updateItem(this.data.id,
-        this.DialogSubCategoriasForm.get('nombre').value,
-        this.DialogSubCategoriasForm.get('fotoUrl').value,
-        this.DialogSubCategoriasForm.get('activo').value,
-        this.DialogSubCategoriasForm.get('categoria').value)
-    } else {
-      this.addItem(this.DialogSubCategoriasForm.get('nombre').value,
-        this.DialogSubCategoriasForm.get('fotoUrl').value,
-        this.DialogSubCategoriasForm.get('activo').value,
-        this.DialogSubCategoriasForm.get('categoria').value);
-    }
     this.dialogRef.close();
   }
   updateItem(id: string, nombre: string, fotoUrl: string, activo: boolean, categoria: string) {
@@ -233,5 +224,91 @@ export class DialogPedidos {
   }
   addItem(nombre: string, fotoUrl: string, activo: boolean, categoria: string) {
     this.itemsRef.push({ nombre: nombre, fotoUrl: fotoUrl, activo: activo, categoria: categoria, descripcion: '' });
+  }
+}
+
+@Component({
+  selector: 'dialog-ubicacion',
+  templateUrl: 'dialog-ubicacion.html',
+  styleUrls: ['./pedidos.component.css']
+})
+export class DialogUbicacion {
+  latitude='';
+  longitude='';
+  direccion='';
+  referencia='';
+  celular='';
+  uploadPercent: Observable<number>;
+  downloadURL: Observable<string>;
+  itemsRef: AngularFireList<any>;
+  itemsRef2: AngularFireList<any>;
+  items: Observable<any[]>;  
+  options;
+  layers;
+  map: L.Map;
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogPedidos>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    db: AngularFireDatabase,
+    private storage: AngularFireStorage) {
+    this.itemsRef = db.list('Usuario');
+    this.itemsRef2 = db.list('Ubicacion');
+    this.items = this.itemsRef2.snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({
+          id: c.payload.key as string,
+          latitude: c.payload.child('latitude').val() as string,
+          longitude: c.payload.child('longitude').val() as string,
+          direccion:c.payload.child('direccion').val() as string,
+          referencia:c.payload.child('referencia').val() as string,
+          celular:c.payload.child('celreferencia').val() as string,
+        }))
+      )
+    );
+    this.options = {
+      layers: [
+        tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', 
+        {  maxZoom: 20,
+           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+           accessToken: 'pk.eyJ1IjoiY3Jpc3NpbHZhIiwiYSI6ImNrbTVzN2tqYzBoZDkyeW85bzBqOHZ3NXkifQ.mC5GUucKLrEg-yVBlxTWLw',
+           id: 'mapbox/streets-v11',
+           tileSize: 512,
+           zoomOffset: -1,
+          })
+      ],
+      zoom: 16,
+      center: latLng(Number(this.latitude), Number(this.longitude)),
+      zoomControl:false,
+      dragging:false,
+      scrollWheelZoom: false
+    };
+    this.layers = [
+      marker([Number(this.latitude), Number(this.longitude)])
+    ];
+  }
+  onMapReady(map: L.Map) {
+    this.map = map;
+  }
+  changeView() {
+    this.map.panTo(new L.LatLng(Number(this.latitude), Number(this.longitude)));
+  } 
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  aceptar() {
+    this.dialogRef.close();
+  }
+  setCoords(latitude,longitude,direccion,referencia,celular){
+    this.latitude=latitude;
+    this.longitude=longitude;
+    this.changeView();
+    this.layers = [
+      marker([Number(this.latitude), Number(this.longitude)])
+    ];
+    this.direccion=direccion;
+    this.referencia=referencia;
+    this.celular=celular;
   }
 }

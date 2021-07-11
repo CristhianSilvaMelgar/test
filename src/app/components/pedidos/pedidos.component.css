@@ -10,6 +10,9 @@ table {
 tr td{
     width: 20%;
 }
+.leaflet-pane.leaflet-shadow-pane{
+    display: none;
+}
 
 .container{
     display: flex;
@@ -34,18 +37,26 @@ tr td{
 }
 .header mat-form-field{
     font-size: 14px;
-    width: 60%;
-    min-width: 60%;
+    width: 40%;
+    min-width: 40%;
 }
 .header .categoria{
     font-size: 14px;
-    width: 30%;
+    width: 40%;
     min-width: 30%;
 }
 .red {
-    color: red; 
+    color: #F93154; 
 }
 
 .green {
-    color: green;
+    color: #00B74A;
+}
+.curso {
+    color: #1266F1;
+}
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

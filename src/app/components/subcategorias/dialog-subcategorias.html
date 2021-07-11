@@ -23,7 +23,7 @@
   <mat-form-field>
     <mat-label>Categoria</mat-label>
     <mat-select required formControlName="categoria" placeholder="Seleccione">
-      <mat-option *ngFor="let categoria of items | async" value="{{categoria.id}}">{{categoria.nombre | json}}</mat-option>
+      <mat-option *ngFor="let categoria of items | async" value="{{categoria.id}}">{{categoria.nombre}}</mat-option>
     </mat-select>
   </mat-form-field>
   </form>

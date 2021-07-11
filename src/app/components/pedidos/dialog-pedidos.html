@@ -1,37 +1,25 @@
 <h1 mat-dialog-title>Detalles Pedidos</h1>
 <div mat-dialog-content class="dialog">
-  <!--<form [formGroup]="DialogSubCategoriasForm" (ngSubmit)="aceptar()">
-  <mat-form-field>
-    <mat-label>Nombre</mat-label>
-    <input matInput formControlName="nombre">
-  </mat-form-field>
-  <mat-form-field style="display: none;">
-    <mat-label>FotoUrl</mat-label>
-    <input matInput formControlName="fotoUrl" >
-  </mat-form-field>
-  <div *ngIf="fotoUrlEx !=''; else elseBlock"><img [src]="fotoUrlEx"  width="180px" height="180px"></div>
-  <ng-template #elseBlock><img [src]="downloadURL | async"  width="180" height="180px"></ng-template>
-  <input type="file" (change)="uploadFile($event)" />
-  <div>{{ uploadPercent | async }}</div>
-  <mat-form-field>
-    <mat-label>Estado</mat-label>
-  <mat-select required formControlName="activo" placeholder="Seleccione">
-        <mat-option value=true>Dar de Alta</mat-option>
-        <mat-option value=false>Dar de Baja</mat-option>
-  </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Categoria</mat-label>
-    <mat-select required formControlName="categoria" placeholder="Seleccione">
-      <mat-option *ngFor="let categoria of items | async" value="{{categoria.id}}">{{categoria.nombre | json}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  </form>-->
   <h2>Datos</h2>
   <p>Fecha: {{data.fecha | date:'dd/MM/yyyy HH:mm'}}</p>
   <p>Activo: {{data.activo}}</p>
-  <p>Estado: {{data.estado}}</p>
+  <ng-container *ngFor="let producto of items2 | async">
+  <p *ngIf="producto.id === data.dly">Repartidor: {{producto.nombre}}</p>
+  </ng-container>
   <p>Precio Total: {{data.precio}}</p>
+    <div *ngIf="data.estado =='true'; else elseBlock">
+      Estado: Completado
+    </div>
+    <ng-template #elseBlock>
+      <div *ngIf="data.estado =='false'; else elseBlock2">
+          Estado: En Curso
+      </div>
+      <ng-template #elseBlock2>
+          Estado: Preparando
+      </ng-template>
+    </ng-template>
+    <br>
+    <br>
   <h2>Productos</h2>
   <ng-container *ngFor="let producto of items | async">
     <ng-container *ngFor="let productos of products">
@@ -43,7 +31,6 @@
     </ng-container>
   </ng-container>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" color="warn">Cancelar</button>
-  <button mat-button (click)="aceptar()" color="primary" [disabled]="!DialogSubCategoriasForm.valid">Ok</button>
+<div mat-dialog-actions [ngClass]="'center'">
+  <button mat-button (click)="aceptar()" color="primary">Ok</button>
 </div>

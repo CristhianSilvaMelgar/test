@@ -2,13 +2,13 @@
     <mat-sidenav [(opened)]='opened' mode="side">
         <mat-nav-list>
             <mat-list-item routerLinkActive="activebutton">
-                <mat-icon mat-list-icon>person</mat-icon>
+                <mat-icon mat-list-icon>account_circle</mat-icon>
                 <span mat-line>{{auth.user.Nombre}}</span>
                 <span mat-line>{{auth.user.Tipo}}</span>
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item routerLinkActive="activebutton">
-                <mat-icon mat-list-icon>home</mat-icon>
+                <mat-icon mat-list-icon>dashboard</mat-icon>
                 <a mat-line routerLink="/main">Dashboard</a>
             </mat-list-item>
             <mat-divider></mat-divider>
@@ -28,7 +28,7 @@
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
-                <mat-icon mat-list-icon>inventory</mat-icon>
+                <mat-icon mat-list-icon>event_note</mat-icon>
                 <a mat-line routerLink="/main/pedidos">Pedidos</a>
             </mat-list-item>
             <mat-divider></mat-divider>

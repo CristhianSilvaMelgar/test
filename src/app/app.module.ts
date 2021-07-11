@@ -38,7 +38,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DialogSubCategorias, SubcategoriasComponent } from './components/subcategorias/subcategorias.component';
 import { DialogProductos ,ProductosComponent } from './components/productos/productos.component';
 import { DialogUsuarios, UsuariosComponent } from './components/usuarios/usuarios.component';
-import { DialogPedidos,PedidosComponent } from './components/pedidos/pedidos.component';
+import { DialogPedidos,DialogUbicacion,PedidosComponent } from './components/pedidos/pedidos.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { DialogPedidos,PedidosComponent } from './components/pedidos/pedidos.com
     UsuariosComponent,
     DialogUsuarios,
     PedidosComponent,
-    DialogPedidos
+    DialogPedidos,
+    DialogUbicacion
   ],
   imports: [
     BrowserModule,
@@ -95,6 +97,7 @@ import { DialogPedidos,PedidosComponent } from './components/pedidos/pedidos.com
     MatSortModule,
     MatDialogModule,
     MatFormFieldModule,
+    LeafletModule
   ],
   providers: [
     { provide: PERSISTENCE, useValue: 'session' },
