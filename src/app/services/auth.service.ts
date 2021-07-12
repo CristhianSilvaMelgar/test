@@ -88,7 +88,7 @@ export class AuthService {
           if(this.user.Tipo === ''){
             this.logout();
           }else{
-            this.router.navigate(['/main']);
+            this.router.navigate(['/main/categorias']);
           }
         });
       })

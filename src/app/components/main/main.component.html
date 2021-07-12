@@ -6,11 +6,11 @@
                 <span mat-line>{{auth.user.Nombre}}</span>
                 <span mat-line>{{auth.user.Tipo}}</span>
             </mat-list-item>
-            <mat-divider></mat-divider>
+            <!--<mat-divider></mat-divider>
             <mat-list-item routerLinkActive="activebutton">
                 <mat-icon mat-list-icon>dashboard</mat-icon>
                 <a mat-line routerLink="/main">Dashboard</a>
-            </mat-list-item>
+            </mat-list-item>-->
             <mat-divider></mat-divider>
             <mat-list-item routerLinkActive="activebutton">
                 <mat-icon mat-list-icon>inventory</mat-icon>
@@ -39,7 +39,7 @@
             <mat-divider></mat-divider>
             <mat-list-item>
                 <mat-icon mat-list-icon>qr_code</mat-icon>
-                <a mat-line>Generar Reportes</a>
+                <a mat-line routerLink="/main/reportes">Generar Reportes</a>
             </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
@@ -50,9 +50,9 @@
             </button>
             <span>Bamboo Web</span>
             <span class="spacer"></span>
-            <button mat-icon-button>
+            <!--<button mat-icon-button>
               <mat-icon>search</mat-icon>
-            </button>
+            </button>-->
             <button mat-icon-button (click)="auth.logout()">
               <mat-icon>logout</mat-icon>
             </button>

@@ -40,7 +40,8 @@ import { DialogProductos ,ProductosComponent } from './components/productos/prod
 import { DialogUsuarios, UsuariosComponent } from './components/usuarios/usuarios.component';
 import { DialogPedidos,DialogUbicacion,PedidosComponent } from './components/pedidos/pedidos.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-
+import { ReportesComponent } from './components/reportes/reportes.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     DialogUsuarios,
     PedidosComponent,
     DialogPedidos,
-    DialogUbicacion
+    DialogUbicacion,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +76,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
         {path: 'productos', component:ProductosComponent ,canActivate: [AuthGuard]},
         {path: 'usuarios', component:UsuariosComponent ,canActivate: [AuthGuard]},
         {path: 'pedidos', component:PedidosComponent ,canActivate: [AuthGuard]},
+        {path: 'reportes', component:ReportesComponent ,canActivate: [AuthGuard]}
       ]},
       {path: '', redirectTo: '/login', pathMatch: 'full'},
     ]),
@@ -97,7 +100,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MatSortModule,
     MatDialogModule,
     MatFormFieldModule,
-    LeafletModule
+    LeafletModule,
+    NgxQRCodeModule
   ],
   providers: [
     { provide: PERSISTENCE, useValue: 'session' },
